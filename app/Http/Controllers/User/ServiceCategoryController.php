@@ -19,19 +19,19 @@ class ServiceCategoryController extends Controller
         $count = Category::where('parent_id', 0)->count();
         $list = '<option data-parent="0" value="0" >بدون دسته بندی</option>';
         foreach ($category_parent_list as $key => $item) {
-            $list .= '<option data-id="' . $item->id . '" value="' . $item->id . '" class="level-1">' . $item->category_title . ' 
+            $list .= '<option data-id="' . $item->id . '" value="' . $item->id . '" class="level-1">' . $item->name . ' 
             ' . (count(Category::where('parent_id', $item->id)->get()) ? '&#xf104;  ' : '') . '
            </option>';
             if (Category::where('parent_id', $item->id)->count()) {
                 $count += Category::where('parent_id', $item->id)->count();
                 foreach (Category::where('parent_id', $item->id)->get() as $key1 => $itemlevel1) {
-                    $list .= '<option data-parent="' . $item->id . '" value="' . $itemlevel1->id . '" class="level-2">' . $itemlevel1->category_title . '
+                    $list .= '<option data-parent="' . $item->id . '" value="' . $itemlevel1->id . '" class="level-2">' . $itemlevel1->name . '
                 ' . (count(Category::where('parent_id', $itemlevel1->id)->get()) ? '&#xf104;  ' : '') . '
                 </option>';
                     if (Category::where('parent_id', $itemlevel1->id)->count()) {
                         $count += Category::where('parent_id', $itemlevel1->id)->count();
                         foreach (Category::where('parent_id', $itemlevel1->id)->get() as $key2 => $itemlevel2) {
-                            $list .= '<option data-parent="' . $itemlevel1->id . '" value="' . $itemlevel2->id . '" class="level-3">' . $itemlevel2->category_title . '
+                            $list .= '<option data-parent="' . $itemlevel1->id . '" value="' . $itemlevel2->id . '" class="level-3">' . $itemlevel2->name . '
                     ' . (count(Category::where('parent_id', $itemlevel2->id)->get()) ? '&#xf104;  ' : '') . '
                     </option>';
 
@@ -39,14 +39,14 @@ class ServiceCategoryController extends Controller
                             if (Category::where('parent_id', $itemlevel2->id)->count()) {
                                 $count += Category::where('parent_id', $itemlevel2->id)->count();
                                 foreach (Category::where('parent_id', $itemlevel2->id)->get() as $key3 => $itemlevel3) {
-                                    $list .= '<option data-parent="' . $itemlevel2->id . '" value="' . $itemlevel3->id . '" class="level-4">' . $itemlevel3->category_title . '
+                                    $list .= '<option data-parent="' . $itemlevel2->id . '" value="' . $itemlevel3->id . '" class="level-4">' . $itemlevel3->name . '
                         ' . (count(Category::where('parent_id', $itemlevel3->id)->get()) ? '&#xf104;  ' : '') . '
                         </option>';
 
                                     if (Category::where('parent_id', $itemlevel3->id)->count()) {
                                         $count += Category::where('parent_id', $itemlevel3->id)->count();
                                         foreach (Category::where('parent_id', $itemlevel3->id)->get() as $key4 => $itemlevel4) {
-                                            $list .= '<option data-parent="' . $itemlevel3->id . '" value="' . $itemlevel4->id . '" class="level-4">' . $itemlevel4->category_title . '
+                                            $list .= '<option data-parent="' . $itemlevel3->id . '" value="' . $itemlevel4->id . '" class="level-4">' . $itemlevel4->name . '
                                 
                                 </option>';
                                         }

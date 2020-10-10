@@ -10,7 +10,7 @@ Route::get('/Logout', 'Auth\LoginController@LogOut')->name('User.Logout');
 Route::group(['middleware' => 'checkAdmin'], function () {
 
     Route::get('/dashboard', 'User\MainController@index')->name('Dashboard');
-    Route::get('/stores-list', 'User\StoreController@index')->name('Pannel.Services.Stores');
+    Route::get('/product-list', 'User\StoreController@index')->name('Pannel.Services.Stores');
 
     Route::get('/getTime', 'User\MainController@getTime')->name('getOnlineTime');
 
@@ -40,6 +40,10 @@ Route::group(['middleware' => 'checkAdmin'], function () {
     Route::post('categories/getData', 'User\ServiceCategoryController@getData')->name('category.Edit.getData');
 
     Route::post('editCategory/submit', 'User\ServiceCategoryController@SubmitCategoryEdit')->name('Category.Edit.Submit');
+
+
+    Route::get('edit-product/{id}', 'User\StoreController@EditProduct')->name('Panel.EditProduct');
+    Route::post('edit-product/{id}', 'User\StoreController@SaveEditProduct')->name('Panel.EditProduct');
 
 
     Route::post('Edit/getData', 'User\ServiceController@getData')->name('Service.Edit.getData');

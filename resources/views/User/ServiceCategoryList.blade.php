@@ -48,7 +48,7 @@
             <div class="form-group col-md-12">
               <label for="recipient-name" class="col-form-label">دسته:</label>
               <select  @if ($count> 1)
-                size=" {{$count}} " @elseif($count > 10) size="10" @else size="2"
+                size=" {{($count+2)}} " @elseif($count > 10) size="10" @else size="2"
                 @endif class="form-control" name="parent_id" id="parent_id">
                 {!! $list !!}
 
@@ -203,7 +203,7 @@
                 @endif
               </td>
 
-              <td>{{$category->description}}</td>
+              <td>{{str_limit($category->description,100,'...')}}</td>
               <td>
                 @if ($category->picture)
                 <img width="75px" style="max-height: 60px !important" class="img-fluid "

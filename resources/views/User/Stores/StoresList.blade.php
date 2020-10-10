@@ -2,39 +2,7 @@
 
 @section('content')
 
-<div class="modal fade" id="showStore" tabindex="-1" role="dialog" aria-labelledby="showStoreLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <img src="" alt="" class="w-100 img-fluid">
-            </div>
 
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">مناطق تحت پوشش</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body locations">
-
-            </div>
-
-        </div>
-    </div>
-</div>
 {{-- modal for delete --}}
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -64,49 +32,49 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-body">
-                    <form id="example-advanced-form" method="post" action="{{route('Pannel.Product')}}"
-                        enctype="multipart/form-data">
-                        @csrf
-                        <h3>محصول</h3>
-                        <section>
-                            <div class="row product-detail mb-2" style="position: relative;">
-                                <div class="form-group col-md-6">
-                                    <label for="recipient-name" class="col-form-label">نام محصول</label>
-                                    <input id="product_name" class="form-control text-right" name="product_name"
-                                        required type="text" dir="rtl">
+                <form id="example-advanced-form" method="post" action="{{route('Pannel.Product')}}"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <h3>محصول</h3>
+                    <section>
+                        <div class="row product-detail mb-2" style="position: relative;">
+                            <div class="form-group col-md-6">
+                                <label for="recipient-name" class="col-form-label">نام محصول</label>
+                                <input id="product_name" class="form-control text-right" name="product_name" required
+                                    type="text" dir="rtl">
 
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="recipient-name" class="col-form-label">قیمت محصول</label>
-                                    <input id="product_price" class="form-control text-right" name="product_price"
-                                        required type="number" dir="rtl">
-                                </div>
-                                   <div class="form-group col-md-6">
-                                    <label for="recipient-name" class="col-form-label">تخفیف (درصد)</label>
-                                    <input id="discount" class="form-control text-right" name="discount"
-                                        required type="number" dir="rtl">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="recipient-name" class="col-form-label">تعداد</label>
-                                    <input id="count" class="form-control text-right" name="count" required
-                                        type="number" dir="rtl">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="recipient-name" class="col-form-label">تصویر محصول</label>
-                                    <input id="product_picture" class="form-control text-right" name="product_picture"
-                                        type="file" dir="rtl">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="recipient-name" class="col-form-label">دسته بندی</label>
-                                    <select name="category" id="category" class="form-control">
-                                        <option value="">باز کردن فهرست انتخاب</option>
-                                       
-                                        @foreach (\App\Models\Category::all() as $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                {{-- <div class="form-group  col-md-6 pt-4">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="recipient-name" class="col-form-label">قیمت محصول</label>
+                                <input id="product_price" class="form-control text-right" name="product_price" required
+                                    type="number" dir="rtl">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="recipient-name" class="col-form-label">تخفیف (درصد)</label>
+                                <input id="discount" class="form-control text-right" name="discount" required
+                                    type="number" dir="rtl">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="recipient-name" class="col-form-label">تعداد</label>
+                                <input id="count" class="form-control text-right" name="count" required type="number"
+                                    dir="rtl">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="recipient-name" class="col-form-label">تصویر محصول</label>
+                                <input id="product_picture" class="form-control text-right" name="product_picture"
+                                    type="file" dir="rtl">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="recipient-name" class="col-form-label">دسته بندی</label>
+                                <select name="category" id="category" class="form-control">
+                                    <option value="">باز کردن فهرست انتخاب</option>
+
+                                    @foreach (\App\Models\Category::all() as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            {{-- <div class="form-group  col-md-6 pt-4">
                                     <span>وضعیت محصول</span>
                                     <div class="">
                                         <label class="" for="">فعال</label>
@@ -114,30 +82,21 @@
                                             name="product_status" id="">
                                     </div>
                                 </div> --}}
-                                <div class="form-group col-md-12">
-                                    <label for="recipient-name" class="col-form-label">توضیح محصول: </label>
-                                    <textarea id="product_description" class="form-control text-right"
-                                        name="product_description" type="text" dir="rtl"></textarea>
-                                </div>
+                            <div class="form-group col-md-12">
+                                <label for="recipient-name" class="col-form-label">توضیح محصول: </label>
+                                <textarea id="product_description" class="form-control text-right"
+                                    name="product_description" type="text" dir="rtl"></textarea>
                             </div>
+                        </div>
 
-                        </section>
-                    </form>
+                    </section>
+                </form>
             </div>
         </div>
     </div>
 </div>
 </div>
 
-{{-- modal for edit --}}
-
-<div class="modal fade bd-example-modal-lg-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content edit-modal-content">
-        </div>
-    </div>
-</div>
 
 <div class="container-fluid">
     <div class="card">
@@ -149,14 +108,6 @@
                         <i class="fa fa-trash"></i>
                     </span>
                 </a>
-
-                <a href="#" title="ویرایش فروشگاه" data-toggle="modal" data-target=".bd-example-modal-lg-edit"
-                    class="mx-2">
-                    <span class="edit-personal __icon bg-info">
-                        <i class="fa fa-edit"></i>
-                    </span>
-                </a>
-
             </div>
             <div>
 
@@ -165,7 +116,6 @@
                         <i class="fa fa-plus"></i>
                     </span>
                 </a>
-
                 <a href="#" title="تازه سازی" class="mx-2" onclick="location.reload()">
                     <span class="__icon bg-primary">
                         <i class="fa fa-refresh"></i>
@@ -176,7 +126,7 @@
     </div>
 
     {{-- filtering --}}
-    <div class="card filtering" style="display:none;">
+    {{-- <div class="card filtering" style="display:none;">
         <div class="card-body">
             <form action=" {{route('Personals.FilterData')}} " method="post">
                 @csrf
@@ -215,7 +165,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> --}}
 
     <div class="card">
         <div class="card-body">
@@ -243,6 +193,7 @@
                             <th>تخفیف </th>
 
                             <th>تصویر</th>
+                            <th>عملیات</th>
 
                         </tr>
                     </thead>
@@ -258,25 +209,33 @@
                                 </div>
                             </td>
                             <td> {{$key+1}} </td>
-                            <td>{{$product->name}}</td>
+                            <td>{{$product->product_name}}</td>
                             <td>
-                                {{$personal->count}}
+                                {{$product->count}}
                             </td>
                             <td>{{$product->category->name}}
                             </td>
                             <td>
-                                {{$product->price}}
+                                {{$product->product_price}}
                             </td>
                             <td>{{$product->discount}}</td>
                             <td>
                                 @if ($product->product_picture !== '' && $product->product_picture !== null)
                                 <a href="#" title="مشاهده تصویر" data-toggle="modal" data-target="#showStore">
                                     <img width="75px" class="img-fluid "
-                                        src="{{asset("uploads/$product->product_picture")}} " />
+                                        src="{{asset("$product->product_picture")}} " />
                                 </a>
                                 @else
                                 --
                                 @endif
+                            </td>
+                            <td>
+                                <a href="{{route('Panel.EditProduct',$product->id)}}" title="ویرایش"
+                                    class="edit-product mx-2">
+                                    <span class="edit-personal __icon bg-info">
+                                        <i class="fa fa-edit"></i>
+                                    </span>
+                                </a>
                             </td>
                         </tr>
                         @endforeach
@@ -296,10 +255,7 @@
 <!-- begin::form wizard -->
 <script src="{{route('BaseUrl')}}/Pannel/assets/vendors/form-wizard/jquery.steps.min.js"></script>
 <script src="{{route('BaseUrl')}}/Pannel/assets/js/examples/form-wizard.js"></script>
-<!-- end::form wizard -->
-<script src="{{route('BaseUrl')}}/Pannel/assets/input-mask/jquery.inputmask.js"></script>
-<script src="{{route('BaseUrl')}}/Pannel/assets/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="{{route('BaseUrl')}}/Pannel/assets/input-mask/jquery.inputmask.extensions.js"></script>
+
 <script>
     $(function () {
         $.ajaxSetup({
