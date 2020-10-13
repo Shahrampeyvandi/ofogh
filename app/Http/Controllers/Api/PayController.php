@@ -102,6 +102,12 @@ class PayController extends Controller
         $transactioncharge->from_to='انتقال از حساب درآمد خدمت رسان با ای دی '.$incomeuseracount->id;
         $transactionincome->from_to='انتقال به حساب شارژ خدمت رسان با ای دی '.$chargeuseracount->id;
 
+        $chargeuseracount->expenses+=$amount;
+        $incomeuseracount->deductions+=$amount;
+    
+        $chargeuseracount->transactionsc+=1;
+        $incomeuseracount->transactionsc+=1;
+
         $chargeuseracount->update();
         $incomeuseracount->update();
 

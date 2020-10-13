@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Services\Service;
 use App\Models\Services\ServiceCategory;
+use App\Models\App\Slideshow;
 
 class ServiceController extends Controller
 {
@@ -15,6 +16,12 @@ class ServiceController extends Controller
 
 
       $service = Service::where('id', $service_id)->first();
+
+      $slideshow=Slideshow::where('place','خدمات')->where('page_id',$service->id)->where('status',1)->where('release','<=',date("Y-m-d"))->where('expiry','>=',date("Y-m-d"))->get();
+
+
+      $service['slideshow']=$slideshow;
+
       if ($service !== null) {
         $serviceArray = [];
         $serviceArray['service_title'] = $service->service_title;

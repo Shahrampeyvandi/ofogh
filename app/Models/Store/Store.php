@@ -3,7 +3,9 @@
 namespace App\Models\Store;
 
 use App\Models\Neighborhood;
+use App\Models\Personals\Personal;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\City\City;
 
 class Store extends Model
 {
@@ -28,6 +30,16 @@ class Store extends Model
    
     public function workinghours()
     {
-        return $this->hasOne(StoreWorkingHours::class);
+        return $this->hasOne(StoreWorkingHours::class,'id');
+    }
+
+    public function personal()
+    {
+        return $this->belongsTo(Personal::class,'owner_id');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class,'store_city');
     }
 }

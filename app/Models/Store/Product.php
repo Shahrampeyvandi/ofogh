@@ -2,15 +2,14 @@
 
 namespace App\Models\Store;
 
-use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
     protected $guarded = [];
     
-    public function category()
+    public function store()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Store::class);
     }
 }
