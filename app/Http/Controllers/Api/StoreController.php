@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Store\Product;
 use App\Models\Personals\Personal;
+use App\Models\StoreEdit\ProductEdit;
+use App\Models\City\City;
+use App\Models\Neighborhood;
 
 class StoreController extends Controller
 {
@@ -18,7 +21,9 @@ class StoreController extends Controller
      
         $personal=Personal::find($store->owner_id);
         $store['store_address']=$store->store_main_street.' '.$store->store_secondary_street.' پلاک '.$store->store_pelak;
-        $store['mobile']=$personal->personal_mobile;
+        $store['personal_mobile']=$store->tell;
+
+
         $storeArray = [];
         $storeArray['store_name'] = $store->store_name;
         $storeArray['store_address']=$store->store_main_street.' '.$store->store_secondary_street.' پلاک '.$store->store_pelak;
@@ -76,6 +81,63 @@ public function productStatus(Request $request)
             'done',
             200
           );
+}
+
+public function getStorebyloc(Request $request)
+{
+    $store_id = $request->store_id;
+    $neighbourhood=Neighborhood::where('name',$request->neighbourhood)->first();
+    $store = Store::where('id', $store_id)
+    ->first();
+
+    if(is_null($neighbourhood)){
+
+    $store->store_status=2;
+
+    
+    }else{
+
+        $storeb = Store::where('id', $store_id)
+        ->whereHas('neighborhoods',function($q) use ($neighbourhood) {
+            $q->where('id', $neighbourhood->id);
+         })
+         ->first();
+
+       
+     if(is_null($storeb)){
+
+        $store->store_status=2;
+
+
+     }
+    }
+    
+    if(!is_null($store)){
+        $store->products=$store->products;
+        
+    }
+   
+
+    //  if($store){
+
+
+
+    //  }else{
+    //     $store = Store::where('id', $store_id)
+    //      ->first();
+
+    //      $store->store_status=2;
+    //  }
+ 
+     $store['store_address']=$store->store_main_street.' '.$store->store_secondary_street.' پلاک '.$store->store_pelak;
+
+
+
+    return response()->json(
+        $store,
+        200
+      );
+
 }
 
 
