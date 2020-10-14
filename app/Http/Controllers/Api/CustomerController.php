@@ -8,6 +8,7 @@ use App\Models\Acounting\Transations;
 use App\Models\Acounting\UserAcounts;
 use App\Models\App\LoginSmsCode;
 use App\Models\App\Slideshow;
+use App\Models\Category;
 use App\Models\City\City;
 use App\Models\Cunsomers\Cunsomer;
 use App\Models\Neighborhood;
@@ -173,21 +174,22 @@ class CustomerController extends Controller
 
         $slideshow = Slideshow::where('place', 'خانه')->where('status', 1)->where('release', '<=', date("Y-m-d"))->where('expiry', '>=', date("Y-m-d"))->get();
 
-        return response()->json([
-            'name' => $customer->customer_firstname . ' ' . $customer->customer_lastname,
-            'mobile' => $customer->customer_mobile,
-            'charge' => $customer->useracounts[0]->cash,
-            'city' => $customer->customer_city,
-            'profilepic' => $customer->customer_profile,
-            'shomareposhtibani' => $setting->shomareposhtibani,
-            'shomareoperator' => $setting->shomareoperator,
-            'telegramposhtibani' => $setting->telegramposhtibani,
-            'linkappworker' => $setting->linkappservicer,
-            'linklaw' => $setting->linklaw,
-            'linkfaq' => $setting->linkfaq,
-            'slideshow' => $slideshow,
+        return response()->json(
+            [
+                'name' => $customer->customer_firstname . ' ' . $customer->customer_lastname,
+                'mobile' => $customer->customer_mobile,
+                'charge' => $customer->useracounts[0]->cash,
+                'city' => $customer->customer_city,
+                'profilepic' => $customer->customer_profile,
+                'shomareposhtibani' => $setting->shomareposhtibani,
+                'shomareoperator' => $setting->shomareoperator,
+                'telegramposhtibani' => $setting->telegramposhtibani,
+                'linkappworker' => $setting->linkappservicer,
+                'linklaw' => $setting->linklaw,
+                'linkfaq' => $setting->linkfaq,
+                'slideshow' => $slideshow,
 
-        ],
+            ],
             200
         );
     }
@@ -221,7 +223,6 @@ class CustomerController extends Controller
 
                 $order->order_time_second = '';
                 $order->order_date_second = '';
-
             } else {
                 if ($order->selected_time) {
                     if ($order->selected_time == 1) {
@@ -231,7 +232,6 @@ class CustomerController extends Controller
 
                         $order->order_time_second = null;
                         $order->order_date_second = null;
-
                     } else {
 
                         $order->order_time_first = $order->order_time_second;
@@ -239,9 +239,7 @@ class CustomerController extends Controller
 
                         $order->order_time_second = null;
                         $order->order_date_second = null;
-
                     }
-
                 }
             }
         }
@@ -249,7 +247,6 @@ class CustomerController extends Controller
         return response()->json([
             'data' => $orders,
         ], 200);
-
     }
 
     public function getAllArchiveOrders(Request $request)
@@ -278,7 +275,6 @@ class CustomerController extends Controller
 
                 $order->order_time_second = '';
                 $order->order_date_second = '';
-
             } else {
                 if ($order->selected_time) {
                     if ($order->selected_time == 1) {
@@ -288,7 +284,6 @@ class CustomerController extends Controller
 
                         $order->order_time_second = null;
                         $order->order_date_second = null;
-
                     } else {
 
                         $order->order_time_first = $order->order_time_second;
@@ -296,7 +291,6 @@ class CustomerController extends Controller
 
                         $order->order_time_second = null;
                         $order->order_date_second = null;
-
                     }
                 }
             }
@@ -304,7 +298,6 @@ class CustomerController extends Controller
         return response()->json([
             'data' => $orders,
         ], 200);
-
     }
 
     public function getOrder(Request $request)
@@ -357,7 +350,6 @@ class CustomerController extends Controller
                 'rated' => $order_detail->rated,
                 'special_scores' => $specialscores,
             ];
-
         } else {
             $details_array = [
                 'order_recived_price' => '',
@@ -387,7 +379,6 @@ class CustomerController extends Controller
 
             $order->order_time_second = '';
             $order->order_date_second = '';
-
         } else {
             if ($order->selected_time) {
                 if ($order->selected_time == 1) {
@@ -397,7 +388,6 @@ class CustomerController extends Controller
 
                     $order->order_time_second = null;
                     $order->order_date_second = null;
-
                 } else {
 
                     $order->order_time_first = $order->order_time_second;
@@ -405,7 +395,6 @@ class CustomerController extends Controller
 
                     $order->order_time_second = null;
                     $order->order_date_second = null;
-
                 }
             }
         }
@@ -444,7 +433,6 @@ class CustomerController extends Controller
 
                     $order->creditamount = $cost - $order->off_amount;
                     $order->cashamount = 0;
-
                 } else {
                     if ($order->off_amount > 0) {
                         if ($order->offcodeuse->offcode->dolaw == 3) {
@@ -459,13 +447,11 @@ class CustomerController extends Controller
 
                         $order->creditamount = $cunsomeracount;
                         $order->cashamount = $cost - $useracountcustomerwithoff;
-
                     } else {
                         $order->paytype = 'نقدی';
 
                         $order->creditamount = 0;
                         $order->cashamount = $cost;
-
                     }
                 }
 
@@ -473,13 +459,9 @@ class CustomerController extends Controller
                     if ($order->off_amount == 0) {
 
                         $pay['offreason'] = 'کد تخفیف به دلیل عدم بهره مندی از شرایط اعمال نشد';
-
                     }
-
                 }
-
             }
-
         }
 
         $pay['paytype'] = $order->paytype;
@@ -490,96 +472,102 @@ class CustomerController extends Controller
 
 
 
-        if($order->offer_id){
-            $pay['offer']=Offer::find($order->offer_id);
+        if ($order->offer_id) {
+            $pay['offer'] = Offer::find($order->offer_id);
         }
 
         return response()->json(array_merge($array, $personal_array, $details_array, $pay, $specialscores), 200);
-
     }
 
     public function getCategories(Request $request)
     {
-        $payload = JWTAuth::parseToken($request->header('Authorization'))->getPayload();
-        $mobile = $payload->get('mobile');
-        $customer = Cunsomer::where('customer_mobile', $mobile)->first();
-        $id = $request->id;
-        $pos = '0';
-        $category = ServiceCategory::where('category_parent', $id)->count();
-        // if($category){
-        //     $category = ServiceCategory::where('category_parent', $id)->get();
-        // }else{
-        $category1 = ServiceCategory::where('id', $id)->first();
-        $category2 = ServiceCategory::where('id', $category1->category_parent)->first();
-        if ($category2) {
-            $category = ServiceCategory::where('category_parent', $category2->id)->get();
-        } else {
-            $category = ServiceCategory::where('category_parent', $category1->category_parent)->get();
-        }
+        // $payload = JWTAuth::parseToken($request->header('Authorization'))->getPayload();
+        // $mobile = $payload->get('mobile');
+        // $customer = Cunsomer::where('customer_mobile', $mobile)->first();
+        // $id = $request->id;
+        // $pos = '0';
+        // $category = ServiceCategory::where('category_parent', $id)->count();
+        // // if($category){
+        // //     $category = ServiceCategory::where('category_parent', $id)->get();
+        // // }else{
+        // $category1 = ServiceCategory::where('id', $id)->first();
+        // $category2 = ServiceCategory::where('id', $category1->category_parent)->first();
+        // if ($category2) {
+        //     $category = ServiceCategory::where('category_parent', $category2->id)->get();
+        // } else {
+        //     $category = ServiceCategory::where('category_parent', $category1->category_parent)->get();
+        // }
+
 
         // }
+        $category = Category::where('parent_id', 0)->orderBy('name', 'asc')->get();
         foreach ($category as $key => $categ) {
 
             $cat['iditem'] = $categ->id;
-            $cat['title'] = $categ->category_title;
-            $cat['icon'] = $categ->category_icon;
+            $cat['title'] = $categ->name;
+            $cat['icon'] = $categ->picture;
             //$cat['icon']='personals/09156833780/photo-1584535352.jpg';
 
-            $catego = ServiceCategory::where('category_parent', $categ->id)->get();
-            $services = Service::where('service_category_id', $categ->id)->get();
-            $stores = Store::where('store_type', $categ->id)->get();
+            $catego = Category::where('parent_id', $categ->id)->get();
+            // $services = Service::where('service_category_id', $categ->id)->get();
+            // $stores = Store::where('store_type', $categ->id)->get();
 
-            if ($categ->id == $id) {
-                $pos = (string) $key;
-            }
+            // if ($categ->id == $id) {
+            //     $pos = (string) $key;
+            // }
 
-            $chilist = [];
+            // $chilist = [];
 
             $catchitems = [];
-            $servchitems = [];
-            $srorchitems = [];
+            // $servchitems = [];
+            // $srorchitems = [];
 
-            foreach ($catego as $kes => $categor) {
+            if (count($catego)) {
+                foreach ($catego as $kes => $categor) {
 
-                $chil['iditem'] = $categor->id;
-                $chil['title'] = $categor->category_title;
-                $chil['icon'] = $categor->category_icon;
-                //$chil['icon']='personals/09156833780/photo-1584535352.jpg';
-                $chil['type'] = '2';
+                    $chil['iditem'] = $categor->id;
+                    $chil['title'] = $categor->name;
+                    $chil['icon'] = $categor->picture;
+                    //$chil['icon']='personals/09156833780/photo-1584535352.jpg';
+                    $chil['type'] = '2';
 
-                $catchitems[$kes] = $chil;
+                    $catchitems[$kes] = $chil;
+                }
+            } else {
+                $catchitems[] = null;
             }
-            foreach ($services as $kes => $service) {
+            // foreach ($services as $kes => $service) {
 
-                $chil['iditem'] = $service->id;
-                $chil['title'] = $service->service_title;
-                $chil['icon'] = $service->service_icon;
-                //$chil['icon']='personals/09156833780/photo-1584535352.jpg';
+            //     $chil['iditem'] = $service->id;
+            //     $chil['title'] = $service->service_title;
+            //     $chil['icon'] = $service->service_icon;
+            //     //$chil['icon']='personals/09156833780/photo-1584535352.jpg';
 
-                $chil['type'] = '4';
+            //     $chil['type'] = '4';
 
-                $servchitems[$kes] = $chil;
-            }
-            foreach ($stores as $kes => $store) {
+            //     $servchitems[$kes] = $chil;
+            // }
+            // foreach ($stores as $kes => $store) {
 
-                $chil['iditem'] = $store->id;
-                $chil['title'] = $store->store_name;
-                $chil['icon'] = $store->store_icon;
-                //$chil['icon']='personals/09156833780/photo-1584535352.jpg';
+            //     $chil['iditem'] = $store->id;
+            //     $chil['title'] = $store->store_name;
+            //     $chil['icon'] = $store->store_icon;
+            //     //$chil['icon']='personals/09156833780/photo-1584535352.jpg';
 
-                $chil['type'] = '5';
+            //     $chil['type'] = '5';
 
-                $srorchitems[$kes] = $chil;
-            }
+            //     $srorchitems[$kes] = $chil;
+            // }
 
-            $cat['items'] = array_merge($catchitems, $servchitems, $srorchitems);
+            // $cat['items'] = array_merge($catchitems, $servchitems, $srorchitems);
+            $cat['items'] = $catchitems;
             $cate[$key] = $cat;
         }
 
         return response()->json([
             'data' => $cate,
             'error' => [
-                'message' => $pos,
+                'message' => '$pos',
             ],
 
         ], 200);
@@ -759,12 +747,10 @@ class CustomerController extends Controller
                     $serv['type'] = 5;
 
                     $items[$keyss] = $serv;
-
                 }
 
                 $catres['items'] = $items;
                 $result[$keys] = $catres;
-
             }
 
             return response()->json([
@@ -773,7 +759,6 @@ class CustomerController extends Controller
                     'message' => '1',
                 ],
             ], 200);
-
         } else {
 
             $categoryselected = ServiceCategory::where('id', $id)->first();
@@ -801,7 +786,6 @@ class CustomerController extends Controller
                         $serv['type'] = 4;
 
                         $servres[$key] = $serv;
-
                     }
 
                     $stores = Store::where('store_type', $categorychild->id)->get();
@@ -814,18 +798,15 @@ class CustomerController extends Controller
                         $serv['type'] = 5;
 
                         $servres[$keyss] = $serv;
-
                     }
 
                     $catres['items'] = $servres;
                     $result[$kef] = $catres;
-
                 }
 
                 return response()->json([
                     'data' => $result,
                 ], 200);
-
             } else {
 
                 $services = Service::where('service_category_id', $categoryselected->id)->get();
@@ -843,7 +824,6 @@ class CustomerController extends Controller
                     $serv['type'] = 4;
 
                     $servres[$key] = $serv;
-
                 }
 
                 $stores = Store::where('store_type', $categoryselected->id)->get();
@@ -856,7 +836,6 @@ class CustomerController extends Controller
                     $serv['type'] = 5;
 
                     $servres[$keyss] = $serv;
-
                 }
 
                 $catres['items'] = $servres;
@@ -866,10 +845,8 @@ class CustomerController extends Controller
                 return response()->json([
                     'data' => $result,
                 ], 200);
-
             }
         }
-
     }
 
     public function getCategoryArrange(Request $request)
@@ -902,10 +879,8 @@ class CustomerController extends Controller
         unset($result[$i - 1]);
 
         return response()->json([
-            'data' => $result
-            ,
+            'data' => $result,
         ], 200);
-
     }
 
     public function getCustomerAddresses(Request $request)
@@ -920,13 +895,11 @@ class CustomerController extends Controller
         foreach ($addresses as $key => $address) {
             $array['addresses'][$key + 1]['title'] = $address->title;
             $array['addresses'][$key + 1]['address'] = $address->address;
-
         }
 
         return response()->json([
             'data' => $addresses,
         ], 200);
-
     }
 
     public function submitAddress(Request $request)
@@ -936,11 +909,12 @@ class CustomerController extends Controller
         $customer = Cunsomer::where('customer_mobile', $mobile)->first();
         if (is_null($customer)) {
             return response(
-                ['error' => 'خطای احراز هویت'], 404
+                ['error' => 'خطای احراز هویت'],
+                404
             );
         }
         $customer_broker = $customer->brokers;
-// شاید این مشتری متعلق به چند کارگزاری باشد
+        // شاید این مشتری متعلق به چند کارگزاری باشد
         if (is_array($customer_broker) && count($customer_broker) !== 0) {
             foreach ($customer_broker as $key => $broker) {
                 CustomerAddress::create([
@@ -968,9 +942,9 @@ class CustomerController extends Controller
         }
 
         return response()->json(
-            ['data' => 'ادرس با موفقیت ثبت شد']
-            , 200);
-
+            ['data' => 'ادرس با موفقیت ثبت شد'],
+            200
+        );
     }
 
     public function getTransactions(Request $request)
@@ -983,9 +957,9 @@ class CustomerController extends Controller
         $transactions = Transations::where('user_acounts_id', $useracounts->id)->orderBy('id', 'desc')->paginate(15);
 
         return response()->json(
-            $transactions
-            , 200);
-
+            $transactions,
+            200
+        );
     }
 
     public function getUserAccount(Request $request)
@@ -997,8 +971,9 @@ class CustomerController extends Controller
         $useracounts = $customer->useracounts[0];
 
         return response()->json(
-            $useracounts
-            , 200);
+            $useracounts,
+            200
+        );
     }
 
     public function lastorder(Request $request)
@@ -1010,7 +985,7 @@ class CustomerController extends Controller
         $order = Order::where('customer_id', $customer->id)
             ->where(function ($query) {
                 $query->where('order_type', 'معلق')
-                ->orWhere('order_type', 'مناقصه')
+                    ->orWhere('order_type', 'مناقصه')
                     ->orWhere('order_type', 'شروع نشده');
             })
             ->latest()->first();
@@ -1024,42 +999,40 @@ class CustomerController extends Controller
 
                 $order->order_time_first = $order->final_time;
                 $order->order_date_first = $order->final_date;
-    
+
                 $order->order_time_second = '';
                 $order->order_date_second = '';
-    
             } else {
                 if ($order->selected_time) {
                     if ($order->selected_time == 1) {
-    
+
                         // $order->order_time_first='';
                         // $order->order_date_first='';
-    
+
                         $order->order_time_second = null;
                         $order->order_date_second = null;
-    
                     } else {
-    
+
                         $order->order_time_first = $order->order_time_second;
                         $order->order_date_first = $order->order_date_second;
-    
+
                         $order->order_time_second = null;
                         $order->order_date_second = null;
-    
                     }
                 }
             }
 
             return response()->json(
-                $order
-                , 200);
+                $order,
+                200
+            );
         } else {
 
             return response()->json(
-                'nok'
-                , 404);
+                'nok',
+                404
+            );
         }
-
     }
 
     public function lastgoodsorder(Request $request)
@@ -1092,7 +1065,6 @@ class CustomerController extends Controller
                 }
 
                 $products[] = $product;
-
             }
             $order['customer_mobile'] = $order->personal_mobile;
             $order['customer_name'] = $order->store->store_name;
@@ -1113,15 +1085,16 @@ class CustomerController extends Controller
             $order->answers = [];
 
             return response()->json(
-                $order
-                , 200);
+                $order,
+                200
+            );
         } else {
 
             return response()->json(
-                'nok'
-                , 200);
+                'nok',
+                200
+            );
         }
-
     }
 
     public function getCustomerAddressesneighbourhood(Request $request)
@@ -1140,14 +1113,12 @@ class CustomerController extends Controller
             if (in_array($address->neighbourhood, $neighbourhood)) {
 
                 $addressesin[] = $address;
-
             }
         }
 
         return response()->json([
             'data' => $addressesin,
         ], 200);
-
     }
 
     public function rateorder(Request $request)
@@ -1164,7 +1135,7 @@ class CustomerController extends Controller
         $rate->order_id = $order->id;
         if ($order->personal_id) {
             $rate->personal_id = $order->personal_id;
-        }else{
+        } else {
             $rate->personal_id = $order->personals[0]->id;
         }
         $rate->customer_id = $customer->id;
@@ -1183,6 +1154,5 @@ class CustomerController extends Controller
         return response()->json([
             'code' => 200,
         ], 200);
-
     }
 }
