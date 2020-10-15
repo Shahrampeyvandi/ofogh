@@ -24,6 +24,7 @@ Route::get('customer/order','Api\CustomerController@getOrder');
 Route::get('categories','Api\CustomerController@getCategories');
 // دریافقت لیست سرویس ها
 Route::get('customer/services','Api\CustomerController@getServices');
+Route::get('customer/categories','Api\CustomerController@getCategories');
 // دریافت لیستی از دسته بندی ها به صورت ردیفی و پشت سر هم
 Route::get('categoryarrange','Api\CustomerController@getCategoryArrange');
 // دریافت اطلاعات اولیه صفحه اصلی اپ مشتتری
