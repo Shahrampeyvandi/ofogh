@@ -21,11 +21,11 @@ Route::get('customer/orders','Api\CustomerController@getAllOrders');
 // دریافت اطلاعات کامل یک سفارش خاص برای مشتاری
 Route::get('customer/order','Api\CustomerController@getOrder');
 // دریافت دسته بندی ها
-Route::get('customer/categories','Api\CustomerController@getCategories');
+Route::get('categories','Api\CustomerController@getCategories');
 // دریافقت لیست سرویس ها
 Route::get('customer/services','Api\CustomerController@getServices');
 // دریافت لیستی از دسته بندی ها به صورت ردیفی و پشت سر هم
-Route::get('customer/categoryarrange','Api\CustomerController@getCategoryArrange');
+Route::get('categoryarrange','Api\CustomerController@getCategoryArrange');
 // دریافت اطلاعات اولیه صفحه اصلی اپ مشتتری
 Route::get('customer/gethomep','Api\AppCustomerController@index');
 

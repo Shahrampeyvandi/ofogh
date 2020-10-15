@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', 'Auth\LoginController@index')->name('BaseUrl');
-Route::post('/Dashboard', 'Auth\LoginController@Login')->name('Pannel.Login');
+Route::post('/dashboard', 'Auth\LoginController@Login')->name('Pannel.Login');
 Route::get('/Logout', 'Auth\LoginController@LogOut')->name('User.Logout');
 
 

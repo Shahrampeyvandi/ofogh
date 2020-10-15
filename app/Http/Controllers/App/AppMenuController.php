@@ -2,198 +2,121 @@
 
 namespace App\Http\Controllers\App;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Cunsomers\Cunsomer;
-use App\Models\Services\ServiceCategory;
-use App\Models\Services\Service;
-use App\Models\Store\Store;
+use App\Models\Category;
 use App\Models\App\AppMenu;
-
-
+use App\Models\Store\Store;
+use Illuminate\Http\Request;
+use App\Models\Services\Service;
+use App\Models\Cunsomers\Cunsomer;
+use App\Http\Controllers\Controller;
+use App\Models\Services\ServiceCategory;
+use App\Models\Store\Product;
 
 class AppMenuController extends Controller
 {
     public function index()
     {
 
-        $category_parent_list = ServiceCategory::where('category_parent',0)->get();
-       $count = ServiceCategory::where('category_parent',0)->count();
-        $list ='<option data-parent="0" value="0" >بدون دسته بندی</option>';
-       foreach ($category_parent_list as $key => $item) {
-           
-           $list .= '<option data-id="'.$item->id.'" value="'.$item->id.'" class="level-1">'.$item->category_title.' 
-            '.(count(ServiceCategory::where('category_parent',$item->id)->get()) ? '&#xf104;  ' : '' ).'
+        $data['all_categories'] = Category::latest()->get();
+        $category_parent_list = Category::where('parent_id', 0)->get();
+        $count = Category::where('parent_id', 0)->count();
+        $list = '<option data-parent="0" value="0" >بدون دسته بندی</option>';
+        foreach ($category_parent_list as $key => $item) {
+            $list .= '<option data-id="' . $item->id . '" value="' . $item->id . '" class="level-1">' . $item->name . ' 
+            ' . (count(Category::where('parent_id', $item->id)->get()) ? '&#xf104;  ' : '') . '
            </option>';
-         if (ServiceCategory::where('category_parent',$item->id)->count()) {
-             $count += ServiceCategory::where('category_parent',$item->id)->count();
-            foreach (ServiceCategory::where('category_parent',$item->id)->get() as $key1 => $itemlevel1) {
-                $list .= '<option data-parent="'.$item->id.'" value="'.$itemlevel1->id.'" class="level-2">'.$itemlevel1->category_title.'
-                '.(count(ServiceCategory::where('category_parent',$itemlevel1->id)->get()) ? '&#xf104;  ' : '' ).'
+            if (Category::where('parent_id', $item->id)->count()) {
+                $count += Category::where('parent_id', $item->id)->count();
+                foreach (Category::where('parent_id', $item->id)->get() as $key1 => $itemlevel1) {
+                    $list .= '<option data-parent="' . $item->id . '" value="' . $itemlevel1->id . '" class="level-2">' . $itemlevel1->name . '
+                ' . (count(Category::where('parent_id', $itemlevel1->id)->get()) ? '&#xf104;  ' : '') . '
                 </option>';
-                
-                
-             if (ServiceCategory::where('category_parent',$itemlevel1->id)->count()) {
-                $count += ServiceCategory::where('category_parent',$itemlevel1->id)->count();
-                foreach (ServiceCategory::where('category_parent',$itemlevel1->id)->get() as $key2 => $itemlevel2) {
-                    $list .= '<option data-parent="'.$itemlevel1->id.'" value="'.$itemlevel2->id.'" class="level-3">'.$itemlevel2->category_title.'
-                    '.(count(ServiceCategory::where('category_parent',$itemlevel2->id)->get()) ? '&#xf104;  ' : '' ).'
+                    if (Category::where('parent_id', $itemlevel1->id)->count()) {
+                        $count += Category::where('parent_id', $itemlevel1->id)->count();
+                        foreach (Category::where('parent_id', $itemlevel1->id)->get() as $key2 => $itemlevel2) {
+                            $list .= '<option data-parent="' . $itemlevel1->id . '" value="' . $itemlevel2->id . '" class="level-3">' . $itemlevel2->name . '
+                    ' . (count(Category::where('parent_id', $itemlevel2->id)->get()) ? '&#xf104;  ' : '') . '
                     </option>';
-                   
-                   
-                   if (ServiceCategory::where('category_parent',$itemlevel2->id)->count()) {
-                    $count += ServiceCategory::where('category_parent',$itemlevel2->id)->count();
-                    foreach (ServiceCategory::where('category_parent',$itemlevel2->id)->get() as $key3 => $itemlevel3) {
-                        $list .= '<option data-parent="'.$itemlevel2->id.'" value="'.$itemlevel3->id.'" class="level-4">'.$itemlevel3->category_title.'
-                        '.(count(ServiceCategory::where('category_parent',$itemlevel3->id)->get()) ? '&#xf104;  ' : '' ).'
+
+
+                            if (Category::where('parent_id', $itemlevel2->id)->count()) {
+                                $count += Category::where('parent_id', $itemlevel2->id)->count();
+                                foreach (Category::where('parent_id', $itemlevel2->id)->get() as $key3 => $itemlevel3) {
+                                    $list .= '<option data-parent="' . $itemlevel2->id . '" value="' . $itemlevel3->id . '" class="level-4">' . $itemlevel3->name . '
+                        ' . (count(Category::where('parent_id', $itemlevel3->id)->get()) ? '&#xf104;  ' : '') . '
                         </option>';
-                    
-                        if (ServiceCategory::where('category_parent',$itemlevel3->id)->count()) {
-                            $count += ServiceCategory::where('category_parent',$itemlevel3->id)->count();
-                            foreach (ServiceCategory::where('category_parent',$itemlevel3->id)->get() as $key4 => $itemlevel4) {
-                                $list .= '<option data-parent="'.$itemlevel3->id.'" value="'.$itemlevel4->id.'" class="level-4">'.$itemlevel4->category_title.'
+
+                                    if (Category::where('parent_id', $itemlevel3->id)->count()) {
+                                        $count += Category::where('parent_id', $itemlevel3->id)->count();
+                                        foreach (Category::where('parent_id', $itemlevel3->id)->get() as $key4 => $itemlevel4) {
+                                            $list .= '<option data-parent="' . $itemlevel3->id . '" value="' . $itemlevel4->id . '" class="level-4">' . $itemlevel4->name . '
                                 
                                 </option>';
+                                        }
+                                    }
+                                }
                             }
-                        } 
-                     }
-                   }
+                        }
+                    }
                 }
-              }
             }
-         }
-       }
-
-      $all_categories = ServiceCategory::latest()->get();
-
-      $services = Service::all();
-      $stores = Store::all();
-      $appmenus = AppMenu::all();
-
-
-      foreach($appmenus as $keym=>$appmenu){
-
-        $array = unserialize( $appmenu->item );
-
-    
-        if($appmenu->type == 'دسته بندی'){
-
-
-            foreach($array as $keyn=>$arr){
-    
-                $category = ServiceCategory::where('id', $arr)->first();
-    
-    
-                $array[$keyn]=$category['category_title'];
-    
-
-    
-                
-    
-            }
-    
-            $appmenus[$keym]->item=$array;
-
-
-        }else if($appmenu->type == 'خدمت های دسته'){
-
-
-            foreach($array as $keyn=>$arr){
-    
-                $category = ServiceCategory::where('id', $arr)->first();
-    
-    
-                $array[$keyn]=$category['category_title'];
-    
-
-    
-                
-    
-            }
-    
-            $appmenus[$keym]->item=$array;
-
-
-        }else if($appmenu->type == 'فروشگاه های دسته'){
-
-
-            foreach($array as $keyn=>$arr){
-    
-                $category = ServiceCategory::where('id', $arr)->first();
-    
-    
-                $array[$keyn]=$category['category_title'];
-    
-
-    
-                
-    
-            }
-    
-            $appmenus[$keym]->item=$array;
-
-
-        }else if($appmenu->type == 'خدمت'){
-
-
-
-            foreach($array as $keyn=>$arr){
-    
-
-                $service = Service::where('id', $arr)->first();
-    
-    
-                $array[$keyn]=$service['service_title'];
-    
-
-    
-                
-    
-            }
-    
-            $appmenus[$keym]->item=$array;
-
-
-
-
-        }else if($appmenu->type == 'فروشگاه'){
-
-
-            foreach($array as $keyn=>$arr){
-    
-                $store = Store::where('id', $arr)->first();
-    
-    
-                $array[$keyn]=$store['store_name'];
-    
-    
-                
-    
-            }
-    
-            $appmenus[$keym]->item=$array;
-
-
-
         }
-
-    
-
-
-      }
-    //dd($appmenus);
+        $all_categories = Category::latest()->get();
 
 
-      //dd($services);
+        $appmenus = AppMenu::all();
 
 
-        return view('User.App.ManageAppMenu',compact(['list','count','all_categories','services','stores','appmenus']));
-    
+        foreach ($appmenus as $keym => $appmenu) {
+
+            $array = unserialize($appmenu->item);
+
+            if ($appmenu->type == 'لیست دسته بندی') {
+
+                foreach ($array as $keyn => $arr) {
+
+                    $category = Category::where('id', $arr)->first();
+
+                    $array[$keyn] = $category['name'];
+                }
+
+                $appmenus[$keym]->item = $array;
+            } else if ($appmenu->type == 'محصول های دسته') {
+
+                foreach ($array as $keyn => $arr) {
+
+                    $category = Category::where('id', $arr)->first();
+
+
+                    $array[$keyn] = $category['name'];
+                }
+
+                $appmenus[$keym]->item = $array;
+            } else if ($appmenu->type == 'محصول انتخابی') {
+
+                foreach ($array as $keyn => $arr) {
+
+                    $product = Product::where('id', $arr)->first();
+
+                    $array[$keyn] = $product['product_name'];
+                }
+
+                $appmenus[$keym]->item = $array;
+            }
+        }
+        // dd($appmenus);
+
+
+        //dd($services);
+
+
+        return view('User.App.ManageAppMenu', compact(['list', 'count', 'all_categories', 'appmenus']));
 
 
 
 
-    
+
+
 
         //return view('User.Acounting.ManageAppMenu', compact(['personals','cansomers']));
     }
@@ -201,139 +124,42 @@ class AppMenuController extends Controller
     public function submit(Request $request)
     {
 
+
         $validation = $this->getValidationFactory()->make($request->all(), [
             'priority' => 'required',
             'type' => 'required',
-            
-
-
         ]);
 
         if ($validation->fails()) {
 
-            //return response()->json(['messsage' => 'invalid'], 400);
             alert()->error('باید تمامی فیلد های الزامل را پر کنید!', 'ثبت صورت نپذیرفت')->autoclose(2000);
-            //return 'error';
             return back();
+        }
+        if ($request->spechoffer) {
 
+            $spechoffer = 1;
+        } else {
+            $spechoffer = 0;
+        }
+        $arra = array();
+
+        if ($request->type == 'لیست دسته بندی') {
+            $string = serialize($request->store);
+        } elseif ($request->type == 'محصول انتخابی') {
+            $string = serialize($request->service);
+        } else {
+            array_push($arra, $request->category);
+            $string = serialize($arra);
         }
 
-        //dd($request);
-        if($request->spechoffer){
-
-            $spechoffer=1;
-
-        }else{
-            $spechoffer=0;
-
-        }
-
-        if($request->type == 'دسته بندی'){
-
-
-            
-
-            $arra=array();
-
-            array_push($arra, $request->category );
-
-            $string = serialize( $arra );
-
-
-
-
-            $service = AppMenu::create([
-                'priority' => $request->priority,
-                'title' => $request->title,
-                'type' => $request->type,
-                'item' => $string,
-                'special_offer' => $spechoffer,
-                'description' => $request->description,
-            ]);
-        }else if($request->type == 'خدمت های دسته'){
-
-
-            
-
-            $arra=array();
-
-            array_push($arra, $request->category );
-
-            $string = serialize( $arra );
-
-
-
-
-            $service = AppMenu::create([
-                'priority' => $request->priority,
-                'title' => $request->title,
-                'type' => $request->type,
-                'item' => $string,
-                'special_offer' => $spechoffer,
-                'description' => $request->description,
-            ]);
-        }else if($request->type == 'فروشگاه های دسته'){
-
-
-            
-
-            $arra=array();
-
-            array_push($arra, $request->category );
-
-            $string = serialize( $arra );
-
-
-
-
-            $service = AppMenu::create([
-                'priority' => $request->priority,
-                'title' => $request->title,
-                'type' => $request->type,
-                'item' => $string,
-                'special_offer' => $spechoffer,
-                'description' => $request->description,
-            ]);
-        }else if($request->type == 'فروشگاه'){
-
-
-            //sdd($request->store);
-
-
-            $string = serialize( $request->store );
-
-
-            //dd($request);
-            $service = AppMenu::create([
-                'priority' => $request->priority,
-                'title' => $request->title,
-                'type' => $request->type,
-                'item' => $string,
-                'special_offer' => $spechoffer,
-                'description' => $request->description,
-            ]);
-        }else if($request->type == 'خدمت'){
-
-
-
-            $string = serialize( $request->service );
-
-
-            //dd($request);
-            $service = AppMenu::create([
-                'priority' => $request->priority,
-                'title' => $request->title,
-                'type' => $request->type,
-                'item' => $string,
-                'special_offer' => $spechoffer,
-                'description' => $request->description,
-            ]);
-        }
-
-
-       
-
-       
+        $service = AppMenu::create([
+            'priority' => $request->priority,
+            'title' => $request->title,
+            'type' => $request->type,
+            'item' => $string,
+            'special_offer' => $spechoffer,
+            'description' => $request->description,
+        ]);
 
         alert()->success('منو با موفقیت انجام گردید!', 'ثبت موفق')->autoclose(2000);
 
@@ -345,16 +171,12 @@ class AppMenuController extends Controller
         //dd($request);
         foreach ($request->array as $appmenuid) {
             //$checkout = CheckoutPersonals::find($checkoutid);
-        
+
             $appmneu = AppMenu::find($appmenuid);
 
             $appmneu->delete();
+        }
 
-          
-
-            
-         }
-        
         //return 'error';
         //return back;
         alert()->success('با موفقیت حذف گردید', 'حذف موفق')->autoclose(2000);
@@ -362,13 +184,14 @@ class AppMenuController extends Controller
     }
 
 
-    public function applinkshow(Request $request){
+    public function applinkshow(Request $request)
+    {
 
 
-        $store=Store::find($request->id);
+        $store = Store::find($request->id);
 
 
 
-        return view('User.App.AppLink',compact('store'));
+        return view('User.App.AppLink', compact('store'));
     }
 }

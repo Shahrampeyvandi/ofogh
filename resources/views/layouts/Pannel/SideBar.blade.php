@@ -11,33 +11,25 @@
                     <li><a @if (Illuminate\Support\Facades\Route::currentRouteName()=='Pannel.User.List' )
                             class="active" @endif href="{{route('Pannel.User.List')}}"> <span> مدیریت کاربران </span>
                         </a> </li>
-
-                   
-                  
-                    
                 </ul>
             </li>
-
-
             <li><a href="#"><i class="icon ti-shopping-cart"></i> <span> محصولات</span> </a>
                 <ul>
                     <li><a @if (Illuminate\Support\Facades\Route::currentRouteName()=='Pannel.Services.Stores' )
                             class="active" @endif href=" {{route('Pannel.Services.Stores')}} "><i
                                 class="icon ti-list"></i> <span> لیست </span> </a></li>
-                  
                 </ul>
             </li>
-            
-            <li><a @if (Illuminate\Support\Facades\Route::currentRouteName()=='Pannel.Category' )
-                            class="active" @endif href=" {{route('Pannel.Category')}} "><i
-                                class="icon ti-list"></i> <span> دسته بندی</span> </a>
-                 
-         
+            <li><a @if (Illuminate\Support\Facades\Route::currentRouteName()=='Pannel.Category' ) class="active" @endif
+                    href=" {{route('Pannel.Category')}} "><i class="icon ti-list"></i> <span> دسته بندی</span> </a>
+
             </li>
+            <li><a @if (Illuminate\Support\Facades\Route::currentRouteName()=='Pannel.AppManage.Menu' ) class="active"
+                    @endif href="{{route('Pannel.AppManage.Menu')}}"> <i class="icon ti-money"></i><span> منوی اپ
+                    </span> </a> </li>
 
             <li><a @if (Illuminate\Support\Facades\Route::currentRouteName()=='Pannel.Setting' ) class="active" @endif
                     href="#"><i class="icon ti-layout"></i> <span> تنظیمات </span> </a></li>
-
         </ul>
     </div>
 </div>

@@ -497,8 +497,6 @@ class CustomerController extends Controller
         // } else {
         //     $category = ServiceCategory::where('category_parent', $category1->category_parent)->get();
         // }
-
-
         // }
         $category = Category::where('parent_id', 0)->orderBy('name', 'asc')->get();
         foreach ($category as $key => $categ) {
@@ -851,32 +849,36 @@ class CustomerController extends Controller
 
     public function getCategoryArrange(Request $request)
     {
-        $payload = JWTAuth::parseToken($request->header('Authorization'))->getPayload();
-        $mobile = $payload->get('mobile');
-        $customer = Cunsomer::where('customer_mobile', $mobile)->first();
-        $id = $request->id;
-        $category = ServiceCategory::where('id', $id)->first();
+        // $payload = JWTAuth::parseToken($request->header('Authorization'))->getPayload();
+        // $mobile = $payload->get('mobile');
+        // $customer = Cunsomer::where('customer_mobile', $mobile)->first();
+        // $id = $request->id;
+        // $category = ServiceCategory::where('id', $id)->first();
+        $basic_categories = Category::where('parent_id',0)->orderBy('name','asc')->get();
 
-        $idcatparnt = $category->category_parent;
+        // $idcatparnt = $category->category_parent;
         $result = [];
-
-        for ($i = 0; $idcatparnt; $i++) {
-
-            $categoryparent = ServiceCategory::where('id', $idcatparnt)->first();
-            if ($categoryparent) {
-                $cat['iditem'] = $categoryparent->id;
-                $cat['title'] = $categoryparent->category_title;
-                //$cat['icon']=$categoryparent->category_icon;
-                $cat['icon'] = 'personals/09156833780/photo-1584535352.jpg';
-
-                $idcatparnt = $categoryparent->category_parent;
-
-                $result[$i] = $cat;
-            } else {
-                break;
-            }
+        foreach ($basic_categories as $key => $category) {
+            
         }
-        unset($result[$i - 1]);
+
+        // for ($i = 0; $idcatparnt; $i++) {
+
+        //     $categoryparent = ServiceCategory::where('id', $idcatparnt)->first();
+        //     if ($categoryparent) {
+        //         $cat['iditem'] = $categoryparent->id;
+        //         $cat['title'] = $categoryparent->category_title;
+        //         //$cat['icon']=$categoryparent->category_icon;
+        //         $cat['icon'] = 'personals/09156833780/photo-1584535352.jpg';
+
+        //         $idcatparnt = $categoryparent->category_parent;
+
+        //         $result[$i] = $cat;
+        //     } else {
+        //         break;
+        //     }
+        // }
+        // unset($result[$i - 1]);
 
         return response()->json([
             'data' => $result,
